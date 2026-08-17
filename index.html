@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="UB Peer-Review">
+<meta name="theme-color" content="#12262B">
+<title>Unterrichtsbeobachtung – Peer-Review · Online</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12262B; --ink-soft:#3E565D; --paper:#EDF1F0; --card:#FFF; --rule:#CBD6D5;
+  --teal:#0E5B63; --teal-dark:#0A464C; --gold:#C98A00; --red:#9E2A2B; --ok:#2E6B4F;
+  --shadow:0 1px 0 rgba(18,38,43,.06), 0 8px 24px -18px rgba(18,38,43,.5);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:15px;line-height:1.45;-webkit-text-size-adjust:100%}
+.wrap{max-width:960px;margin:0 auto;padding:18px 16px 120px}
+h1,h2,.tab,.btn,th{font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif}
+header.masthead{background:var(--ink);color:#fff;border-radius:4px;padding:16px 18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.masthead h1{margin:0;font-size:30px;line-height:1;letter-spacing:.04em;text-transform:uppercase;font-weight:700}
+.masthead .sub{margin-top:6px;font-size:13px;color:#B9CBCB;max-width:64ch}
+.masthead .strip{display:flex;height:5px;margin:12px -18px -16px;border-radius:0 0 4px 4px;overflow:hidden}
+.masthead .strip i{flex:1}
+.strip i:nth-child(1){background:#1b1b1b}.strip i:nth-child(2){background:#C1272D}.strip i:nth-child(3){background:#E8B300}.strip i:nth-child(4){background:var(--teal)}
+nav.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tab{appearance:none;border:1px solid var(--rule);background:var(--card);color:var(--ink-soft);padding:8px 14px;border-radius:3px;font-size:17px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tab:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:4px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card>h2{margin:0;padding:11px 16px;border-bottom:1px solid var(--rule);font-size:19px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.card>h2 .q{font-family:"IBM Plex Mono",monospace;font-size:11px;background:var(--teal);color:#fff;padding:2px 7px;border-radius:2px;letter-spacing:.02em}
+.card>h2 .hint{font-family:"IBM Plex Sans",sans-serif;font-size:12px;text-transform:none;letter-spacing:0;color:var(--ink-soft);font-weight:400}
+.card .body{padding:14px 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px 12px}
+label.f{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-soft);font-weight:600;margin-bottom:3px}
+input[type=text],input[type=date],input[type=number],select,textarea{width:100%;padding:9px 10px;border:1px solid var(--rule);border-radius:3px;background:#FBFCFC;font:inherit;color:var(--ink)}
+textarea{min-height:66px;resize:vertical}
+.mono{font-family:"IBM Plex Mono",monospace}
+.note{font-size:12px;color:var(--ink-soft)}
+.warn{background:#FCF3E3;border:1px solid #E8CE92;color:#6A4B00;padding:9px 12px;border-radius:3px;font-size:13px;margin-bottom:12px}
+.err{background:#FBEDED;border:1px solid #E0B3B3;color:#7C1F20;padding:9px 12px;border-radius:3px;font-size:13px}
+.missing{border-color:var(--red)!important;background:#FDF4F4!important}
+.phasebar.missing{background:transparent!important;border:0!important}
+.phasebar.missing .phase{border-color:var(--red);background:#FDF4F4}
+.phasebar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.phase{border:1px solid var(--rule);background:#FBFCFC;padding:9px 16px;border-radius:3px;cursor:pointer;font-family:"Barlow Condensed",sans-serif;font-size:17px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--ink-soft)}
+.phase[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#231800}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--rule);background:#FBFCFC;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;color:var(--ink-soft)}
+.chip[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.item{border-top:1px solid #E4EAE9;padding:12px 0}
+.item:first-child{border-top:0}
+.item .top{display:flex;gap:10px;align-items:flex-start}
+.item .id{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--teal);padding-top:2px;min-width:44px;font-weight:600}
+.item .txt{flex:1}
+.item .txt b{font-weight:500}
+.tagrow{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap}
+.tag{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.04em;padding:2px 6px;border-radius:2px;border:1px solid var(--rule);color:var(--ink-soft)}
+.tag.core{border-color:var(--gold);color:#7A5400;background:#FCF6E8}
+.tag.ph{border-color:#C9DBDA;background:#EFF6F5;color:var(--teal)}
+.tag.bli{border-color:#B9C6D6;background:#F0F4F9;color:#2C4A6B}
+.item.dim{opacity:.42}
+.scale{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap}
+.scale label{flex:1 1 130px;min-width:120px;text-align:center;border:1px solid var(--rule);border-radius:3px;padding:10px 6px;cursor:pointer;background:#FBFCFC;user-select:none}
+.scale label span{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:17px;letter-spacing:.05em;text-transform:uppercase}
+.scale label small{display:block;font-size:10px;color:var(--ink-soft);line-height:1.2;margin-top:2px}
+.scale input{position:absolute;opacity:0;width:0;height:0}
+.scale label:has(input:checked){background:var(--teal);border-color:var(--teal-dark);color:#fff}
+.scale label:has(input:checked) small{color:#D5E7E6}
+.scale label.pp:has(input:checked){background:var(--teal-dark);border-color:#062E32}
+.scale label.no:has(input:checked){background:var(--red);border-color:#7C1F20}
+.scale label.nb:has(input:checked){background:var(--ink-soft);border-color:var(--ink)}
+.scale input:focus-visible+span{outline:3px solid var(--gold);outline-offset:3px}
+.ev{margin-top:8px}
+.dock{position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:#fff;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;z-index:9}
+.dock .count{font-family:"IBM Plex Mono",monospace;font-size:12px;color:#B9CBCB;margin-right:auto}
+.dock .count b{color:#fff}
+.btn{border:1px solid transparent;border-radius:3px;padding:10px 16px;cursor:pointer;font-size:17px;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.btn.primary{background:var(--gold);color:#231800}
+.btn.ghost{background:transparent;border-color:#476067;color:#fff}
+.btn.light{background:#fff;border-color:var(--rule);color:var(--ink)}
+.btn.small{padding:6px 11px;font-size:15px}
+.prog{height:4px;background:#2A4147;border-radius:2px;flex-basis:100%;overflow:hidden;order:-1;margin:-10px -16px 8px;width:calc(100% + 32px)}
+.prog i{display:block;height:100%;background:var(--gold);width:0;transition:width .2s}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);border-bottom:1px solid var(--rule);padding:7px 8px;font-weight:600}
+td{border-bottom:1px solid #EAEFEE;padding:7px 8px;vertical-align:top}
+.bar{display:flex;height:18px;border-radius:2px;overflow:hidden;border:1px solid var(--rule);min-width:120px;background:#F1F4F3}
+.bar i{display:block}
+.bar .c2{background:var(--teal-dark)} .bar .c1{background:var(--teal)} .bar .cm1{background:var(--red)}
+.legend2{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-soft);margin:0 0 12px}
+.legend2 i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.pct{font-family:"IBM Plex Mono",monospace;font-weight:600;white-space:nowrap}
+.toast{position:fixed;bottom:74px;left:50%;transform:translateX(-50%);background:var(--ok);color:#fff;padding:10px 18px;border-radius:3px;font-size:14px;z-index:20;box-shadow:var(--shadow)}
+.hidden{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{.dock,nav.tabs,.no-print{display:none!important}body{background:#fff}.card{break-inside:avoid;box-shadow:none}.item.dim{opacity:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <h1>Unterrichtsbeobachtung</h1>
+  <div class="sub">Peer-Review · Kurzfassung · Online-Erfassung. Ein Bogen = ein 20-minütiger Ausschnitt am Stundenanfang oder Stundenende. Erfasst wird, <b>ob</b> etwas zu beobachten war – nicht, wie gut es gemacht wurde. Keine Namen von Lehrkräften.</div>
+  <div class="strip"><i></i><i></i><i></i><i></i></div>
+</header>
+
+
+<div id="storeWarn" class="warn hidden"></div>
+<div id="draftBox" class="warn hidden"></div>
+<div id="onlineStatus" class="note" style="margin:0 0 12px;padding:8px 12px;background:#fff;border:1px solid var(--rule);border-radius:3px">Verbindung wird geprüft …</div>
+
+<section id="view-form" role="tabpanel" aria-labelledby="tab-form">
+  <div class="card">
+    <h2>Kopfdaten <span class="hint">keine Angaben zur Lehrperson</span></h2>
+    <div class="body">
+      <div class="grid">
+        <div><label class="f" for="m_date">Datum</label><input type="date" id="m_date"></div>
+        <div><label class="f" for="m_peer">Peer-Kürzel</label><input type="text" id="m_peer" class="mono" placeholder="P1" maxlength="6"></div>
+        <div><label class="f" for="m_time">Stunde / Uhrzeit</label><input type="text" id="m_time" class="mono" placeholder="z. B. 3. Std."></div>
+        <div><label class="f" for="m_stufe">Klassenstufe</label><input type="text" id="m_stufe" placeholder="z. B. 8"></div>
+        <div><label class="f" for="m_fach">Fach</label><input type="text" id="m_fach" placeholder="z. B. Biologie"></div>
+        <div><label class="f" for="m_sprache">Unterrichtssprache</label>
+          <select id="m_sprache"><option value="">–</option><option>Deutsch (DaF)</option><option>Deutsch (DFU)</option><option>Spanisch</option><option>Englisch</option><option>gemischt</option></select></div>
+        <div><label class="f" for="m_geraete">Digitale Geräte</label>
+          <select id="m_geraete"><option value="">–</option><option>keine im Einsatz</option><option>nur Lehrkraft</option><option>Lernende teilweise</option><option>Lernende 1:1</option></select></div>
+      </div>
+      <div class="phasebar">
+        <span class="f" style="margin:0 4px 0 0">Ausschnitt</span>
+        <button type="button" class="phase" data-phase="A" aria-pressed="false">Stundenanfang</button>
+        <button type="button" class="phase" data-phase="E" aria-pressed="false">Stundenende</button>
+        <span class="note">Nicht passende Indikatoren werden ausgegraut – dort <b>keine Gelegenheit</b> wählen.</span>
+      </div>
+      <div style="margin-top:12px"><span class="f">Sozialformen</span><div class="chips" id="sozialformen"></div></div>
+      <div style="margin-top:12px"><label class="f" for="opt_kurz"><input type="checkbox" id="opt_kurz" style="width:auto;margin-right:6px">Nur Kernset anzeigen (10 Indikatoren)</label></div>
+      <div id="formErr" class="err hidden" style="margin-top:12px"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Erfassung <span class="hint">vier Antworten je Indikator</span></h2>
+    <div class="body note">
+      <b>++</b> deutlich und mehrfach beobachtbar &nbsp;·&nbsp;
+      <b>+</b> ansatzweise beobachtbar &nbsp;·&nbsp;
+      <b>−</b> nicht beobachtbar, obwohl Gelegenheit bestand &nbsp;·&nbsp;
+      <b>0</b> keine Feststellung möglich – Ausschnitt gab es nicht her; geht <b>nicht</b> in die Auswertung ein<br>
+      Angelehnt an die Feststellungslogik des BLI-3.0-Unterrichtsbeobachtungsbogens (+ / − / 0), um Nuancen zwischen deutlich und ansatzweise beobachtbar sichtbar zu machen. Anders als dort ist das keine Aussage über Exzellenz, sondern nur über das Vorliegen eines Belegs.
+    </div>
+  </div>
+
+  <div id="blocks"></div>
+
+  <div class="card no-print">
+    <h2>Gesamteindruck</h2>
+    <div class="body">
+      <label class="f" for="n_gesamt">Freie Notizen (Szenen, Zitate, Material – ohne Personenbezug)</label>
+      <textarea id="n_gesamt" placeholder="Beobachtet, nicht interpretiert."></textarea>
+    </div>
+  </div>
+
+</section>
+
+</div>
+
+<div class="dock">
+  <div class="prog"><i id="progBar"></i></div>
+  <div class="count">Erfasst: <b id="dockDone">0</b>/<span id="dockTotal">0</span> · in dieser Sitzung übermittelt: <b id="dockSaved">0</b> <span id="draftInfo" style="color:#8FA8A8"></span></div>
+  <button class="btn ghost" id="btnReset">Bogen leeren</button>
+  <button class="btn primary" id="btnSave">Beobachtung speichern</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script>
+const BLOCKS=[
+ {key:"B",title:"Basiskriterien",q:"Basis",hint:"Rahmen für beide Fragen",items:[
+  {id:"B1",bli:"3.1 / 3.3",ph:"AE",core:true,t:"Die Lernzeit wird durchgängig genutzt: pünktlicher Beginn, fließende Übergänge, zeitnaher Umgang mit Störungen."},
+  {id:"B2",bli:"3.1",ph:"AE",core:false,t:"Struktur und Arbeitsaufträge sind transparent; Lernende beginnen ohne organisatorische Rückfragen."},
+  {id:"B3",bli:"4.1",ph:"AE",core:false,t:"Lehrkraft und Lernende gehen wertschätzend und respektvoll miteinander um."},
+  {id:"B4",bli:"4.4",ph:"AE",core:false,t:"Positive Fehlerkultur: Lernende äußern sich auch bei Unsicherheiten, Fehler werden als Lernanlass genutzt."},
+  {id:"B5",bli:"1.3",ph:"AE",core:true,t:"Ein hoher Anteil der Lernenden arbeitet engagiert mit (Sprech-, Schreib-, Handlungsanteile bei den Lernenden)."}]},
+ {key:"F1",title:"Selbstregulation und Reflexion",q:"Frage 1",hint:"BLI-Kriterien 1.1, 1.4, 1.5",items:[
+  {id:"F1.1",bli:"1.1",ph:"A",core:false,t:"Die zu erwerbenden Kompetenzen bzw. Ziele der Stunde sind transparent; Lernende greifen sie auf oder benennen sie."},
+  {id:"F1.2",bli:"1.4",ph:"AE",core:true,t:"Lernende planen und organisieren ihr Vorgehen im Lernprozess selbst (Reihenfolge, Zeit, Material, Sozialform)."},
+  {id:"F1.3",bli:"1.4",ph:"AE",core:true,t:"Lernende nutzen Instrumente zur Selbststeuerung (Checkliste, Kriterienraster, Lernplan, Lösungsblatt, Lerntagebuch, digitales Tool)."},
+  {id:"F1.4",bli:"1.4 / 1.5",ph:"AE",core:false,t:"Lernende kontrollieren ihre Arbeitsergebnisse selbst und korrigieren sie; Partnerfeedback erfolgt kriteriengeleitet."},
+  {id:"F1.5",bli:"1.4",ph:"AE",core:false,t:"Lernende suchen selbstständig Unterstützung (bei Mitlernenden, im Material, bei der Lehrkraft)."},
+  {id:"F1.6",bli:"1.5",ph:"E",core:true,t:"Lernende reflektieren Lösungswege, benennen ihren Lernzuwachs oder ihren Sprachlernprozess."},
+  {id:"F1.7",bli:"1.5",ph:"E",core:false,t:"Die Lehrkraft legt Reflexionsphasen an und bezieht sie kriteriengeleitet auf Ziele, Kompetenzen oder die eingesetzten (digitalen) Medien."}]},
+ {key:"F2",title:"Passung zu unterschiedlichen Lernbedürfnissen",q:"Frage 2",hint:"BLI-Kriterien 2.2, 2.3, 3.2, 3.4, 3.5",items:[
+  {id:"F2.1",bli:"3.4",ph:"AE",core:true,t:"Aufgaben sind differenziert nach Niveaustufe, Umfang oder Zeit (mindestens zwei Varianten erkennbar)."},
+  {id:"F2.2",bli:"3.2 / 3.4",ph:"AE",core:false,t:"Lernende haben Wahlmöglichkeiten (Aufgabe, Lernweg, Material oder Medium, Produkt, Sozialform, Tempo)."},
+  {id:"F2.3",bli:"3.4 / 4.5",ph:"AE",core:true,t:"Gestufte Hilfen und Unterstützungsmaterial stehen einsatzbereit zur Verfügung und werden genutzt (Tippkarten, Wortspeicher, Satzbausteine, Musterlösung)."},
+  {id:"F2.4",bli:"1.2 / 2.4 / 2.5",ph:"AE",core:true,t:"Die sprachliche Unterstützung passt zum Sprachstand (Vorentlastung des Wortschatzes, Formulierungshilfen, Klärung von Fachbegriffen)."},
+  {id:"F2.5",bli:"2.2",ph:"AE",core:true,t:"Der Einsatz digitaler Medien ist auf Lernwirksamkeit ausgerichtet; Lernende nutzen sie, um Arbeitsaufträge zu erfüllen."},
+  {id:"F2.6",bli:"3.2 / 3.4",ph:"AE",core:false,t:"Die Wahl der Medien und Methoden eröffnet unterschiedliche Lernzugänge (Text, Bild, Audio, Video, Handeln)."},
+  {id:"F2.7",bli:"3.3 / 3.5",ph:"AE",core:true,t:"Die Lehrkraft unterstützt einzelne Lernende oder Gruppen gezielt, auch leistungsstarke (Anschlussaufgaben, individuelle Rückmeldung)."},
+  {id:"F2.8",bli:"2.3",ph:"AE",core:false,t:"Lernende wenden vermittelte Lern- und Arbeitsstrategien an (Texterschließung, Textproduktion, Problemlösen)."},
+  {id:"F2.9",bli:"3.4",ph:"AE",core:false,t:"Mehrsprachigkeit und kulturelle Erfahrungen der Lernenden werden im Unterricht nutzbar gemacht."}]}
+];
+const SCALE=[
+ {v:"2",l:"++",s:"deutlich beobachtbar",cls:"pp"},
+ {v:"1",l:"+",s:"ansatzweise beobachtbar"},
+ {v:"-1",l:"−",s:"nicht beobachtbar, trotz Gelegenheit",cls:"no"},
+ {v:"0",l:"0",s:"keine Feststellung möglich",cls:"nb"}
+];
+const SOZIALFORMEN=["Plenum","Einzelarbeit","Partnerarbeit","Gruppenarbeit","Stationen/Lernbüro","Präsentation"];
+const ALL=BLOCKS.flatMap(b=>b.items);
+const DRAFT="ub:peer-review:kurz:offen:online";
+const FORM_VERSION="peer-review-kurz-v16-supabase-1";
+let data=[],memoryOnly=false,dirty=false,phase="",draftTimer=null,sessionSubmitted=0;
+let sb=null;
+function initSupabase(){
+  const cfg=window.PEER_REVIEW_CONFIG||{};
+  if(!cfg.supabaseUrl||!cfg.supabasePublishableKey||cfg.supabaseUrl.includes("YOUR_PROJECT")){
+    throw new Error("Supabase ist noch nicht konfiguriert. Bitte config.js ausfüllen.");
+  }
+  if(!window.supabase||!window.supabase.createClient) throw new Error("Supabase-Bibliothek konnte nicht geladen werden.");
+  sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  return sb;
+}
+function setOnlineStatus(text,ok){
+  const el=document.getElementById("onlineStatus");
+  el.textContent=text;
+  el.style.color=ok?"var(--ok)":"var(--red)";
+  el.style.borderColor=ok?"#B8D5C6":"#E0B3B3";
+}
+async function checkConnection(){
+  try{
+    if(!sb)initSupabase();
+    const {data:can,error}=await sb.rpc("can_submit_observation");
+    if(error)throw error;
+    setOnlineStatus(can?"✓ Online · bereit zum sicheren Übermitteln":"Verbindung vorhanden, aber Einreichen ist derzeit nicht freigegeben.",!!can);
+    return !!can;
+  }catch(e){
+    setOnlineStatus("Offline / nicht konfiguriert · "+(e.message||e),false);
+    return false;
+  }
+}
+const state={ratings:{},evidence:{},blockNotes:{},sozial:[]};
+const HEAD=["m_date","m_time","m_peer","m_stufe","m_fach","m_sprache","m_geraete"];
+const val=id=>document.getElementById(id).value;
+
+/* --- laufende Sicherung des offenen Bogens (Kopfdaten + Wertungen + Notizen) --- */
+function touch(){dirty=true;scheduleDraft();}
+function scheduleDraft(){if(memoryOnly)return;clearTimeout(draftTimer);draftTimer=setTimeout(saveDraft,400);}
+function draftObj(){
+  const h={};HEAD.forEach(id=>h[id]=val(id));
+  return{v:1,head:h,phase:phase,sozial:state.sozial,ratings:state.ratings,evidence:state.evidence,
+    blockNotes:state.blockNotes,gesamt:val("n_gesamt"),
+    kurz:document.getElementById("opt_kurz").checked,ts:Date.now()};
+}
+function saveDraft(){
+  if(memoryOnly)return;
+  try{
+    localStorage.setItem(DRAFT,JSON.stringify(draftObj()));
+    const d=new Date();
+    document.getElementById("draftInfo").textContent="· Entwurf gesichert "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+  }catch(e){}
+}
+function clearDraft(){
+  clearTimeout(draftTimer);
+  try{localStorage.removeItem(DRAFT);}catch(e){}
+  const el=document.getElementById("draftInfo");if(el)el.textContent="";
+}
+function restoreDraft(){
+  let d=null;try{d=JSON.parse(localStorage.getItem(DRAFT)||"null");}catch(e){}
+  if(!d||typeof d!=="object")return false;
+  const h=d.head||{};
+  HEAD.forEach(id=>{if(h[id])document.getElementById(id).value=h[id];});
+  phase=d.phase||"";
+  document.querySelectorAll(".phase").forEach(b=>b.setAttribute("aria-pressed",String(!!phase&&b.dataset.phase===phase)));
+  state.sozial=Array.isArray(d.sozial)?d.sozial.slice():[];
+  document.querySelectorAll("#sozialformen .chip").forEach(b=>b.setAttribute("aria-pressed",String(state.sozial.includes(b.textContent))));
+  state.ratings=(d.ratings&&typeof d.ratings==="object")?Object.assign({},d.ratings):{};
+  state.evidence=(d.evidence&&typeof d.evidence==="object")?Object.assign({},d.evidence):{};
+  state.blockNotes=(d.blockNotes&&typeof d.blockNotes==="object")?Object.assign({},d.blockNotes):{};
+  Object.keys(state.ratings).forEach(k=>{const r=document.querySelector('input[name="r_'+k+'"][value="'+state.ratings[k]+'"]');if(r)r.checked=true;});
+  Object.keys(state.evidence).forEach(k=>{const e=document.getElementById("ev_"+k);if(e)e.value=state.evidence[k];});
+  Object.keys(state.blockNotes).forEach(k=>{const e=document.getElementById("bn_"+k);if(e)e.value=state.blockNotes[k];});
+  document.getElementById("n_gesamt").value=d.gesamt||"";
+  document.getElementById("opt_kurz").checked=!!d.kurz;
+  applyPhase();applyKurz();updateProgress();
+  const etwasDrin=Object.keys(state.ratings).length>0||HEAD.filter(id=>id!=="m_date").some(id=>val(id).trim());
+  if(etwasDrin){
+    const box=document.getElementById("draftBox");
+    box.classList.remove("hidden");
+    box.innerHTML='<b>Begonnener Bogen wiederhergestellt</b>'+(d.ts?' (Stand '+new Date(d.ts).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"})+')':'')+'. Weiterarbeiten und unten über <b>Beobachtung speichern</b> ablegen – oder <button type="button" class="btn small light" id="draftDrop" style="margin-left:6px">verwerfen</button>';
+    document.getElementById("draftDrop").onclick=()=>{if(confirm("Wiederhergestellten Bogen verwerfen?"))resetForm(true);};
+  }
+  return true;
+}
+function hasOpenSheet(){
+  return Object.keys(state.ratings).length>0||!!val("m_stufe").trim()||!!val("m_fach").trim();
+}
+
+async function submitObservation(obs){
+  if(!sb)initSupabase();
+  const row={
+    submission_uuid:obs.submission_uuid,
+    form_version:FORM_VERSION,
+    peer_code:obs.meta.peer||null,
+    observation_date:obs.meta.datum||null,
+    phase:obs.meta.phase||null,
+    grade_level:obs.meta.stufe||null,
+    subject:obs.meta.fach||null,
+    payload:obs
+  };
+  const {error}=await sb.from("observations").insert(row);
+  if(error)throw error;
+}
+
+function buildChips(){
+  const box=document.getElementById("sozialformen");
+  SOZIALFORMEN.forEach(s=>{
+    const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=s;b.setAttribute("aria-pressed","false");
+    b.onclick=()=>{const on=b.getAttribute("aria-pressed")==="true";b.setAttribute("aria-pressed",String(!on));
+      state.sozial=on?state.sozial.filter(x=>x!==s):[...state.sozial,s];touch();};
+    box.appendChild(b);});
+}
+function itemNode(it){
+  const d=document.createElement("div");d.className="item";d.dataset.id=it.id;d.dataset.ph=it.ph;d.dataset.core=it.core;
+  const phTag=it.ph==="A"?'<span class="tag ph">nur Stundenanfang</span>':it.ph==="E"?'<span class="tag ph">nur Stundenende</span>':'';
+  const coreTag=it.core?'<span class="tag core">Kernset</span>':'';
+  const bliTag=it.bli?'<span class="tag bli">BLI '+it.bli+'</span>':'';
+  d.innerHTML=`<div class="top"><div class="id">${it.id}</div><div class="txt"><b>${it.t}</b><div class="tagrow">${bliTag}${coreTag}${phTag}</div></div></div>
+  <div class="scale">${SCALE.map(s=>`<label class="${s.cls||""}"><input type="radio" name="r_${it.id}" value="${s.v}"><span>${s.l}</span><small>${s.s}</small></label>`).join("")}</div>
+  <div class="ev"><input type="text" id="ev_${it.id}" placeholder="Beleg / Beispiel (optional)"></div>`;
+  d.querySelectorAll("input[type=radio]").forEach(r=>r.addEventListener("change",()=>{state.ratings[it.id]=r.value;touch();updateProgress();}));
+  d.querySelector(".ev input").addEventListener("input",e=>{state.evidence[it.id]=e.target.value;touch();});
+  return d;
+}
+function buildBlocks(){
+  const root=document.getElementById("blocks");root.innerHTML="";
+  BLOCKS.forEach(b=>{
+    const card=document.createElement("div");card.className="card";
+    card.innerHTML=`<h2><span class="q">${b.q}</span>${b.title}<span class="hint">${b.hint}</span></h2>`;
+    const body=document.createElement("div");body.className="body";
+    b.items.forEach(it=>body.appendChild(itemNode(it)));
+    const nb=document.createElement("div");nb.style.marginTop="14px";
+    nb.innerHTML=`<label class="f" for="bn_${b.key}">Belege zu diesem Block</label><textarea id="bn_${b.key}"></textarea>`;
+    body.appendChild(nb);
+    nb.querySelector("textarea").addEventListener("input",e=>{state.blockNotes[b.key]=e.target.value;touch();});
+    card.appendChild(body);root.appendChild(card);
+  });
+  applyPhase();applyKurz();updateProgress();
+}
+function applyPhase(){document.querySelectorAll(".item").forEach(el=>{const p=el.dataset.ph;el.classList.toggle("dim",!!phase&&p!=="AE"&&p!==phase);});}
+function applyKurz(){const on=document.getElementById("opt_kurz").checked;
+  document.querySelectorAll(".item").forEach(el=>el.classList.toggle("hidden",on&&el.dataset.core!=="true"));updateProgress();}
+function visibleItems(){return [...document.querySelectorAll(".item")].filter(el=>!el.classList.contains("hidden"));}
+function updateProgress(){
+  const vis=visibleItems(),done=vis.filter(el=>state.ratings[el.dataset.id]!==undefined).length;
+  document.getElementById("dockDone").textContent=done;
+  document.getElementById("dockTotal").textContent=vis.length;
+  document.getElementById("progBar").style.width=vis.length?(done/vis.length*100)+"%":"0%";
+}
+function meta(){return{
+  datum:document.getElementById("m_date").value,zeit:document.getElementById("m_time").value.trim(),
+  peer:document.getElementById("m_peer").value.trim(),
+  stufe:document.getElementById("m_stufe").value.trim(),fach:document.getElementById("m_fach").value.trim(),
+  sprache:document.getElementById("m_sprache").value,geraete:document.getElementById("m_geraete").value,
+  phase:phase,sozial:state.sozial.join(" / ")};}
+function clearErr(){
+  document.getElementById("formErr").classList.add("hidden");
+  document.querySelectorAll(".missing").forEach(el=>el.classList.remove("missing"));
+}
+function showErr(msgs,els){
+  const box=document.getElementById("formErr");
+  box.innerHTML="<b>Noch nicht gespeichert.</b> "+msgs.join(" ");
+  box.classList.remove("hidden");
+  els.forEach(el=>el.classList.add("missing"));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function newId(m){
+  const date=(m.datum||new Date().toISOString().slice(0,10)).replace(/-/g,"");
+  const peer=(m.peer||"P").replace(/[^A-Za-z0-9_-]/g,"").slice(0,6)||"P";
+  const shortId=crypto.randomUUID().split("-")[0].toUpperCase();
+  return "UB-"+date+"-"+shortId+"-"+peer;
+}
+async function save(){
+  clearErr();
+  const m=meta();
+  const msgs=[],els=[];
+  if(!m.phase){msgs.push("Ausschnitt wählen (Stundenanfang oder Stundenende).");els.push(document.querySelector(".phasebar"));}
+  if(!m.stufe){msgs.push("Klassenstufe eintragen.");els.push(document.getElementById("m_stufe"));}
+  if(!m.fach){msgs.push("Fach eintragen.");els.push(document.getElementById("m_fach"));}
+  if(msgs.length){showErr(msgs,els);toast("Bogen nicht übermittelt – Angaben fehlen.",true);return false;}
+  const submission_uuid=crypto.randomUUID();
+  const obs={id:newId(m),submission_uuid,ts:new Date().toISOString(),meta:m,ratings:{...state.ratings},evidence:{...state.evidence},
+    blockNotes:{...state.blockNotes},gesamt:document.getElementById("n_gesamt").value};
+  const btn=document.getElementById("btnSave");
+  const old=btn.textContent;btn.disabled=true;btn.textContent="Wird übermittelt …";
+  try{
+    await submitObservation(obs);
+    sessionSubmitted++;data.push(obs);dirty=false;clearDraft();refreshCounts();
+    toast("Beobachtung "+obs.id+" erfolgreich übermittelt.");
+    resetForm();
+    await checkConnection();
+    return true;
+  }catch(e){
+    saveDraft();
+    const msg=e&&e.message?e.message:String(e);
+    toast("Übermittlung fehlgeschlagen – Entwurf bleibt gespeichert.",true);
+    setOnlineStatus("Übermittlung fehlgeschlagen · "+msg,false);
+    return false;
+  }finally{btn.disabled=false;btn.textContent=old;}
+}
+function resetForm(alles){
+  state.ratings={};state.evidence={};state.blockNotes={};
+  document.querySelectorAll("input[type=radio]").forEach(r=>r.checked=false);
+  document.querySelectorAll(".ev input").forEach(i=>i.value="");
+  document.querySelectorAll("#blocks textarea").forEach(t=>t.value="");
+  if(alles){state.sozial=[];document.querySelectorAll("#sozialformen .chip").forEach(b=>b.setAttribute("aria-pressed","false"));}
+  document.getElementById("n_gesamt").value="";
+  ["m_stufe","m_fach","m_time"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("draftBox").classList.add("hidden");
+  clearErr();dirty=false;clearDraft();updateProgress();window.scrollTo({top:0,behavior:"smooth"});
+}
+function refreshCounts(){document.getElementById("dockSaved").textContent=sessionSubmitted;}
+
+
+
+
+
+
+
+function toast(m,err){const t=document.createElement("div");t.className="toast";t.textContent=m;if(err)t.style.background="var(--red)";document.body.appendChild(t);setTimeout(()=>t.remove(),2800);}
+
+document.querySelectorAll(".phase").forEach(b=>b.onclick=()=>{
+  phase=b.dataset.phase;document.querySelectorAll(".phase").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));applyPhase();touch();});
+document.getElementById("opt_kurz").onchange=()=>{applyKurz();touch();};
+HEAD.forEach(id=>{const el=document.getElementById(id);el.addEventListener("input",touch);el.addEventListener("change",touch);});
+document.getElementById("n_gesamt").addEventListener("input",touch);
+document.getElementById("btnSave").onclick=save;
+document.getElementById("btnReset").onclick=()=>{if(confirm("Aktuellen Bogen leeren?"))resetForm(true);};
+window.addEventListener("beforeunload",e=>{if(dirty){e.preventDefault();e.returnValue="";}});
+function checkLocalFileBrowser(){
+  if(location.protocol!=="file:") return;
+  const w=document.getElementById("storeWarn");w.classList.remove("hidden");
+  w.innerHTML="<b>Hinweis:</b> Für den produktiven Einsatz diese Dateien über HTTPS bereitstellen. Zum Testen lokal bitte <span class=\"mono\">start-local.bat</span> verwenden und dann http://localhost:8080 öffnen.";
+}
+(async function init(){
+  document.getElementById("m_date").valueAsDate=new Date();
+  buildChips();buildBlocks();checkLocalFileBrowser();restoreDraft();refreshCounts();
+  await checkConnection();
+})();
+</script>
+</body>
+</html>
